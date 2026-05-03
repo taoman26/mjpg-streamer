@@ -707,9 +707,11 @@ void send_file(int id, int fd, char *parameter)
     int i, lfd;
     config conf = servers[id].conf;
 
-    /* in case no parameter was given */
-    if(parameter == NULL || strlen(parameter) == 0)
-        parameter = "index.html";
+    /* return 404 for root access */
+    if(parameter == NULL || strlen(parameter) == 0) {
+        send_error(fd, 404, "Not Found");
+        return;
+    }
 
     /* find file-extension */
     char * pch;
@@ -726,6 +728,14 @@ void send_file(int id, int fd, char *parameter)
     } else {
         extension = parameter + lastDot;
         DBG("%s EXTENSION: %s\n", parameter, extension);
+    }
+
+    /* Restrict only HTML pages, keep other assets (js/css/images) accessible. */
+    if((strcmp(extension, ".htm") == 0 || strcmp(extension, ".html") == 0) &&
+       strcmp(parameter, "control.htm") != 0 &&
+       strcmp(parameter, "control_ja.htm") != 0) {
+        send_error(fd, 404, "Only control.htm and control_ja.htm are available");
+        return;
     }
 
     /* determine mime-type */
