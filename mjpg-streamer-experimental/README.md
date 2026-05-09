@@ -39,3 +39,31 @@ Output plugins:
 * ~output_udp~ (not functional)
 * output_viewer ([documentation](plugins/output_viewer/README.md))
 
+
+Building on Haiku
+=================
+
+mjpg-streamer can be built on [Haiku OS](https://www.haiku-os.org/) with the following notes:
+
+**What works on Haiku:**
+- Core streamer binary (`mjpg_streamer`)
+- `input_http` plugin
+- `output_file`, `output_http`, `output_rtsp`, `output_udp` plugins
+
+**What is not available on Haiku (Linux-only):**
+- `input_uvc` — requires Video4Linux2 (`linux/videodev2.h`)
+- `input_file` — requires `sys/inotify.h`
+- `input_raspicam` — Raspberry Pi specific
+- `output_viewer` — requires SDL
+- `output_zmqserver` — requires ZeroMQ
+
+**Fixes applied for Haiku compatibility:**
+- Updated `cmake_minimum_required` to VERSION 3.5 (required by modern CMake)
+- Added `compat/linux/` shim headers providing `linux/types.h`, `linux/videodev2.h`, and `linux/version.h` for non-Linux platforms
+- Fixed `utils.c`: replaced `<wait.h>` with `<sys/wait.h>`, removed `<linux/stat.h>`
+- Removed `-ldl` linker flag on non-Linux (Haiku's dynamic linking is built into libroot)
+
+**Build:**
+
+    mkdir _build && cd _build && cmake -DCMAKE_BUILD_TYPE=Release .. && make
+
