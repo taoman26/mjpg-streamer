@@ -26,10 +26,10 @@
 #include <linux/types.h>
 #include <string.h>
 #include <fcntl.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <limits.h>
-#include <linux/stat.h>
+// #include <linux/stat.h> -- not needed, sys/stat.h covers this
 #include <sys/stat.h>
 
 #include "utils.h"

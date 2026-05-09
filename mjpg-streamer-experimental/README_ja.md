@@ -45,3 +45,30 @@ Webインターフェースは通常英語で表示されますが、コント�
 「コントロール」のリンクをクリックすれば、カメラの設定項目や選択肢が日本語で表示されます。
 
 翻訳はクライアントサイドで実装されているため、新たなコントロール項目を日本語化したい場合は、翻訳辞書に対応する日本語訳を追加するだけで対応できます。
+Haikuでのビルド
+=================
+
+mjpg-streamerは [Haiku OS](https://www.haiku-os.org/) でビルドできます。
+
+**Haikuで動作するもの：**
+- コアバイナリ（`mjpg_streamer`）
+- `input_http` プラグイン
+- `output_file`、`output_http`、`output_rtsp`、`output_udp` プラグイン
+
+**Haikuで利用できないもの（Linux専用）：**
+- `input_uvc` — Video4Linux2（`linux/videodev2.h`）が必要
+- `input_file` — `sys/inotify.h` が必要
+- `input_raspicam` — Raspberry Pi専用
+- `output_viewer` — SDL が必要
+- `output_zmqserver` — ZeroMQ が必要
+
+**Haiku対応のために行った修正：**
+- `cmake_minimum_required` を VERSION 3.5 に更新（新しいCMakeで必須）
+- `compat/linux/` に互換シムヘッダを追加（`linux/types.h`、`linux/videodev2.h`、`linux/version.h`）
+- `utils.c` の修正：`<wait.h>` を `<sys/wait.h>` に変更、`<linux/stat.h>` を削除
+- 非Linuxプラットフォームで `-ldl` リンクフラグを除去（HaikuはlibRootに動的リンク機能が内蔵）
+
+**ビルド方法：**
+
+    mkdir _build && cd _build && cmake -DCMAKE_BUILD_TYPE=Release .. && make
+
