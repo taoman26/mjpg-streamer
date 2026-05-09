@@ -25,6 +25,7 @@ mjpg-streamerを起動する際、1つ以上の入力プラグインと1つの�
 
 * input_file
 * input_http
+* input_haiku_media ([ドキュメント](plugins/input_haiku_media/README.md))
 * input_opencv ([ドキュメント](plugins/input_opencv/README.md))
 * input_ptp2
 * input_raspicam ([ドキュメント](plugins/input_raspicam/README.md))

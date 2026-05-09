@@ -26,6 +26,7 @@ Input plugins:
 
 * input_file
 * input_http
+* input_haiku_media ([documentation](plugins/input_haiku_media/README.md))
 * input_opencv ([documentation](plugins/input_opencv/README.md))
 * input_ptp2
 * input_raspicam ([documentation](plugins/input_raspicam/README.md))
