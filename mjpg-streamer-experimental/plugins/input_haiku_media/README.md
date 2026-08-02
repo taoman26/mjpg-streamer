@@ -23,12 +23,12 @@ JPEG エンコードと mjpg-streamer の共有バッファへの書き込みだ
 
 ## 必要条件 / Requirements
 
-- **OS**: Haiku R1 Beta 4 以降
+- **OS**: Haiku R1 Beta 5 以降
 - **BubiCam**: このリポジトリと同じ階層(`../../BubiCam`、既定では
   `~/git/BubiCam`)に [`BubiCam`](https://github.com/atomozero/BubiCam) を
   clone してビルド済みであること(`lib/libwebcam/objects.x86_64-cc13-release/libwebcam.so`
   が存在している必要があります)
-- **メディアアドオン**: [`haiku-uvc-webcam`](https://github.com/lamat/haiku-uvc-webcam) が
+- **メディアアドオン**: [`haiku-uvc-webcam`](https://github.com/atomozero/haiku-uvc-webcam) が
   インストール済みで `media_server` に組み込まれていること(WebcamKit が内部で使用します)
 - **ビルドツール**: gcc 13+, cmake 3.x
 
