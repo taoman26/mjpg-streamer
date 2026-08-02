@@ -82,6 +82,27 @@ cd mjpg-streamer-experimental/_build
 デバイス検出・ノード接続・バッファグループの管理など、クラッシュの原因に
 なりやすい低レベルの Media Kit 処理はすべて BubiCam 側の実装に任せています。
 
+### JPEG エンコードについて
+
+libjpeg / libturbojpeg を直接リンクするのではなく、Haiku の **Translation Kit**
+(`BTranslatorRoster`) にエンコードを委譲しています。システムに登録済みの
+JPEG トランスレータアドオン(通常は Haiku 標準の `JPEGTranslator`)がその場で
+呼び出される形です。
+
+```cpp
+/* BBitmapStream takes ownership of 'bitmap' and deletes it on
+   destruction - caller must not delete it separately. */
+BBitmapStream bitmapStream(bitmap);
+BMallocIO jpegOut;
+
+status_t err = BTranslatorRoster::Default()->Translate(
+    &bitmapStream, NULL, NULL, &jpegOut, B_JPEG_FORMAT);
+```
+
+`BBitmap` を `BBitmapStream`(`B_TRANSLATOR_BITMAP` 形式の入力ストリーム)で
+ラップし、出力先にはメモリ上のバッファ `BMallocIO` を渡すだけで、JPEG 品質や
+libjpeg のバージョン差異を意識せずに済みます。
+
 ## 注意事項 / Notes
 
 - 映像品質(乱れ・ティアリング)は USB 帯域不足による isochronous 転送の
