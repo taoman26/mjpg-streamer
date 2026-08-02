@@ -1,7 +1,10 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 project("mjpg-streamer" C)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  include_directories(BEFORE ${CMAKE_SOURCE_DIR}/compat)
+endif()
 
 # If the user doesn't manually specify a build type, use 'Release'
 message("CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
@@ -62,6 +65,7 @@ add_subdirectory(plugins/input_opencv)
 add_subdirectory(plugins/input_raspicam)
 add_subdirectory(plugins/input_ptp2)
 add_subdirectory(plugins/input_uvc)
+add_subdirectory(plugins/input_haiku_media)
 
 #
 # Output plugins
@@ -92,7 +96,11 @@ set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 add_executable(mjpg_streamer mjpg_streamer.c
                              utils.c)
 
-target_link_libraries(mjpg_streamer pthread dl)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_link_libraries(mjpg_streamer pthread dl)
+else()
+  target_link_libraries(mjpg_streamer pthread)
+endif()
 install(TARGETS mjpg_streamer DESTINATION bin)
 
 #
