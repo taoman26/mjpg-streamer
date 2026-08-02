@@ -29,6 +29,7 @@ Plugins
 Input plugins:
 
 * input_file
+* input_haiku_media ([documentation](mjpg-streamer-experimental/plugins/input_haiku_media/README.md))
 * input_http
 * input_opencv ([documentation](mjpg-streamer-experimental/plugins/input_opencv/README.md))
 * input_ptp2
